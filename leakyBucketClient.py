@@ -75,6 +75,8 @@ async def main(desired_queries_per_second_rate=1, url='http://localhost:8080/{}'
                     print('Exception ', e)
                     raise e
                     asyncio.get_event_loop().close()
+                    asyncio.get_event_loop().close()
+                    sys.exit(1)
                     # TODO: Read documention further to successfully cancel
                     # pending tasks once a connection to the server is interrupted
                     # or determined to not exist.
@@ -89,6 +91,8 @@ async def main(desired_queries_per_second_rate=1, url='http://localhost:8080/{}'
         print('Exception ', e)
         raise e
         asyncio.get_event_loop().close()
+        asyncio.get_event_loop().close()
+        sys.exit(1)
         # TODO: Read documention further to successfully cancel
         # pending tasks once a connection to the server is interrupted
         # or determined to not exist.
