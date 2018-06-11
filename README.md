@@ -1,7 +1,14 @@
-To run:
+# Description:
 
-Web service application:
-  python3 webService.py [--delay True]
+This suite of scripts implements a web service application (webService.py) and
+two types of rate-limiting clients. One of the clients uses the token bucket
+network traffic shaping approach (tokenClient.py) and the other client type
+implements the leaky bucket network traffic shaping approach (leakyBucketClient.py).
+
+# To run:
+
+## Web service application:
+######  python3 webService.py [--delay True]
 
   --delay commandline argument allows the user to specify whether to add a delay
   to web service application's responses to client queries. Adding a delay allows
@@ -9,8 +16,8 @@ Web service application:
   in general networked connections.
 
 
-Token rate limiting algorithm Implementation:
-  python3 tokenClient.py [--queries_per_second_rate 1 --iterations 10 --url http://localhost:8080/{}]
+## Token rate limiting algorithm Implementation:
+######  python3 tokenClient.py [--queries_per_second_rate 1 --iterations 10 --url http://localhost:8080/{}]
 
   --queries_per_second_rate commandline argument allows the user to specify how
   many queries per second the client should be throttled to abide within. Queries
@@ -25,8 +32,8 @@ Token rate limiting algorithm Implementation:
   at; example: http://localhost:8080/{}.
 
 
-Leaky bucket rate limiting algorithm implemenation:
-  python3 leakyBucketClient.py [--queries_per_second_rate 1 --iterations 10 --url http://localhost:8080/{}]
+## Leaky bucket rate limiting algorithm implemenation:
+######  python3 leakyBucketClient.py [--queries_per_second_rate 1 --iterations 10 --url http://localhost:8080/{}]
 
   --queries_per_second_rate commandline argument allows the user to specify how
   many queries per second the client should be throttled to abide within. Queries
