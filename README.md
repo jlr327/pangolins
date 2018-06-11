@@ -46,3 +46,7 @@ implements the leaky bucket network traffic shaping approach (leakyBucketClient.
   --url commandline argument is the url AND port number of the web application
   service and is the complete address for the client to resolve the web service
   at; example: http://localhost:8080/{}.
+
+
+## TODO: Bugs to be fixed:
+(1) When there is no web service running and when the leaky bucket client script is subsequently started, the script raises exceptions, tries to close the asyncio event loop regardless of pending tasks, and tries to call sys.exit([with a non-zero exit code]). None of these approaches kill the queued tasks in the asyncio event loop. TODO: Read documentation to learn how to more effectively and cleanly close the event loop and cancel any queue tasks following an exception being raised by a thread, such as an exception that the client is not connected to the web server. I see connection-specific documentation relating to streaming connections, but haven't found the correspondent documentation for non-streaming connections yet.
