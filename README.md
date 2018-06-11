@@ -1,3 +1,10 @@
+# Description:
+
+This suite of scripts implements a web service application (webService.py) and
+two types of rate-limiting clients. One of the clients uses the token bucket
+network traffic shaping approach (tokenClient.py) and the other client type
+implements the leaky bucket network traffic shaping approach (leakyBucketClient.py).
+
 # To run:
 
 ## Web service application:
