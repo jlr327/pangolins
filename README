@@ -1,0 +1,10 @@
+To run:
+
+Web service application:
+  python3 webService.py
+
+Token rate limiting algorithm Implementation:
+  python3 tokenClient.py
+
+Leaky bucket rate limiting algorithm implemenation:
+  python3 leakyBucketClient.py 
