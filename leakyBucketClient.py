@@ -4,8 +4,15 @@ import asyncio
 from datetime import datetime
 from collections import deque
 
-# Leaky Bucket Rate Limiting Algorithm
 class LeakyBucketRateLimiter:
+    """
+    Implements leaky bucket traffic shaping algorithm to constrain rate of client-
+    issued queries to web service.
+
+    @params:
+    queries_per_second_limit: specifies the target queries per second rate that
+    the client is constrained to issue its querys below.
+    """
     def __init__(self, queries_per_second_limit):
         self._bucket_queue = 0
         self._loop = asyncio.get_event_loop()
@@ -59,16 +66,33 @@ async def main(desired_queries_per_second_rate=1, url='http://localhost:8080/{}'
             # If query rate is less than specified rate, issue get query from
             # client to service
             async with aiohttp.ClientSession(loop=loop) as client:
-                async with await client.get(url) as resp:
-                        # print('Sending get query')
-                        nonlocal num_queries
-                        num_queries += 1
+                try:
+                    async with await client.get(url) as resp:
+                            # print('Sending get query')
+                            nonlocal num_queries
+                            num_queries += 1
+                except Exception as e:
+                    print('Exception ', e)
+                    raise e
+                    asyncio.get_event_loop().close()
+                    # TODO: Read documention further to successfully cancel
+                    # pending tasks once a connection to the server is interrupted
+                    # or determined to not exist.
 
-    rate_limiter = LeakyBucketRateLimiter(desired_queries_per_second_rate)
-    start_time = datetime.now()
-    await asyncio.wait([io_operation(rate_limiter) for i in range(num_iterations*desired_queries_per_second_rate)])
-    time_delta = (datetime.now() - start_time).total_seconds()
-    print('Desired QPS:', desired_queries_per_second_rate, 'Achieved QPS:', num_queries / time_delta)
+    try:
+        rate_limiter = LeakyBucketRateLimiter(desired_queries_per_second_rate)
+        start_time = datetime.now()
+        await asyncio.wait([io_operation(rate_limiter) for i in range(num_iterations*desired_queries_per_second_rate)])
+        time_delta = (datetime.now() - start_time).total_seconds()
+        print('Desired QPS:', desired_queries_per_second_rate, 'Achieved QPS:', num_queries / time_delta)
+    except Exception as e:
+        print('Exception ', e)
+        raise e
+        asyncio.get_event_loop().close()
+        # TODO: Read documention further to successfully cancel
+        # pending tasks once a connection to the server is interrupted
+        # or determined to not exist.
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Define queries per second, iterations to be run, and url of web service.')
