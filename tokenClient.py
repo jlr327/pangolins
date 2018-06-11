@@ -75,7 +75,7 @@ async def main(desired_queries_per_second_rate=1, url='http://localhost:8080/{}'
 
     try:
         loop = asyncio.get_event_loop()
-        rate_limiter = TokenRateLimiter()
+        rate_limiter = TokenRateLimiter(replenish_rate=desired_queries_per_second_rate, max_tokens=desired_queries_per_second_rate)
         start_time = loop.time() # datetime.now()
         await asyncio.wait([io_operation(rate_limiter) for i in range(num_iterations*desired_queries_per_second_rate)])
         time_delta = (loop.time() - start_time) #.total_seconds()
